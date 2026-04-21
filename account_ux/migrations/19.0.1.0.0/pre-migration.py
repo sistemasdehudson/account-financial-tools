@@ -43,3 +43,29 @@ def migrate(cr, version):
             _logger.info(f"  ✓ view_account_payment_tree_personalization corregida (id {view_id})")
     else:
         _logger.info("  - view_account_payment_tree_personalization ya está limpia")
+
+    # Marcar módulos desinstalados intencionalmente como uninstalled
+    # para evitar error de inconsistent states en el proceso oficial
+    _logger.info("account_ux pre-migrate: marcando módulos desinstalados como uninstalled")
+    modulos_desinstalados = [
+        'account_tax_settlement',
+        'enseco_report_custom',
+        'l10n_ar_account_tax_settlement',
+        'l10n_ar_account_withholding',
+        'l10n_ar_purchase_stock',
+        'l10n_ar_stock_adhoc',
+        'l10n_ar_withholding_ux',
+        'stock_account_ux',
+        'stock_batch_picking_ux',
+        'stock_picking_show_return',
+        'stock_reserve',
+        'stock_voucher',
+        'web_ir_actions_act_multi',
+    ]
+    cr.execute("""
+        UPDATE ir_module_module
+        SET state = 'uninstalled'
+        WHERE name = ANY(%s)
+        AND state IN ('to upgrade', 'installed')
+    """, (modulos_desinstalados,))
+    _logger.info(f"  ✓ {cr.rowcount} módulos marcados como uninstalled")
