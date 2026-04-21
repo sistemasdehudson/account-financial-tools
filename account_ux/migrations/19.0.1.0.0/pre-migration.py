@@ -18,7 +18,7 @@ def migrate(cr, version):
         WHERE id IN (
             SELECT res_id FROM ir_model_data
             WHERE module = 'account_ux'
-              AND name = 'view_account_payment_tree_personalization'
+              AND name IN ('view_account_payment_tree', 'view_account_payment_tree_personalization')
               AND model = 'ir.ui.view'
         )
         AND arch_db::text LIKE '%payment_method_description%'
