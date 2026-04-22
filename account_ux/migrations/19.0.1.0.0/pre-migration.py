@@ -44,6 +44,22 @@ def migrate(cr, version):
     else:
         _logger.info("  - view_account_payment_tree_personalization ya está limpia")
 
+    # Limpiar use_search_filter_amount del arch_db
+    _logger.info("account_ux pre-migrate: limpiando use_search_filter_amount")
+    cr.execute("""
+        UPDATE ir_ui_view
+        SET arch_db = CAST(
+            regexp_replace(
+                arch_db::text,
+                '<setting id=\"use_search_filter_amount\"[^<]*(<[^/][^>]*>[^<]*</[^>]*>|<[^/][^>]*/?>)*[^<]*</setting>',
+                '',
+                'g'
+            ) AS jsonb
+        )
+        WHERE arch_db::text LIKE '%use_search_filter_amount%'
+    """)
+    _logger.info(f"  ✓ {cr.rowcount} vistas con use_search_filter_amount limpiadas")
+
     # Marcar módulos desinstalados intencionalmente como uninstalled
     # para evitar error de inconsistent states en el proceso oficial
     _logger.info("account_ux pre-migrate: marcando módulos desinstalados como uninstalled")
