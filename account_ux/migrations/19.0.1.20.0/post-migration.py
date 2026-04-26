@@ -136,7 +136,7 @@ def migrate(cr, version):
         except Exception as e:
             error_msg = str(e).split('\n')[0][:300]
             fallidas.append((xmlid, view_id, "Error en write: %s" % error_msg))
-            _logger.error(
+            _logger.warning(
                 "    ✗ %s (id=%d): error en activación: %s",
                 xmlid, view_id, error_msg
             )

@@ -20,44 +20,34 @@ _logger = logging.getLogger(__name__)
 # 23 vistas validadas por script manual el 26-04-2026
 # Source: reactivar_vistas_post_upgrade.py output
 VISTAS_A_REACTIVAR = [
-    # account_ux (3 vistas)
-    ('account_ux', 'view_account_invoice_filter'),
-    ('account_ux', 'view_account_payment_tree_personalization'),
-    ('account_ux', 'view_move_form'),
+    # CRÍTICAS para PDF de ventas
+    ('l10n_ar_sale', 'report_saleorder_document'),  # Header AR
+    ('sale_ux', 'report_saleorder'),                # UX del reporte
     
-    # l10n_ar_purchase (2 vistas)
-    ('l10n_ar_purchase', 'report_purchaseorder_document'),
-    ('l10n_ar_purchase', 'report_purchasequotation_document'),
-    
-    # l10n_ar_sale (2 vistas)
-    ('l10n_ar_sale', 'report_saleorder_document'),  # ← crítica para go-live
-    ('l10n_ar_sale', 'view_order_form'),
-    
-    # l10n_ar_ux (2 vistas)
-    ('l10n_ar_ux', 'view_account_payment_form'),
-    ('l10n_ar_ux', 'view_partner_property_form'),
-    
-    # purchase_stock_ux (2 vistas)
-    ('purchase_stock_ux', 'purchase_order_line_search'),
-    ('purchase_stock_ux', 'purchase_order_line_tree'),
-    
-    # sale_stock_ux (3 vistas)
-    ('sale_stock_ux', 'sale_order_line_usability_tree'),
-    ('sale_stock_ux', 'view_move_form'),
-    ('sale_stock_ux', 'view_order_form'),
-    
-    # sale_ux (5 vistas)
-    ('sale_ux', 'report_saleorder'),
-    ('sale_ux', 'res_config_settings_view_form_inherit'),
-    ('sale_ux', 'sale_order_line_usability_tree'),
-    ('sale_ux', 'view_order_form'),
-    ('sale_ux', 'view_sale_advance_payment_inv'),
-    
-    # stock_ux (4 vistas)
-    ('stock_ux', 'view_move_line_tree'),
+    # CRÍTICAS para inventario/stock (picking)
     ('stock_ux', 'view_picking_form'),
-    ('stock_ux', 'view_stock_return_picking_form'),
-    ('stock_ux', 'view_warehouse_orderpoint_tree_editable'),
+    ('stock_ux', 'view_move_line_tree'),
+    
+    # Las siguientes EXCLUIDAS temporalmente
+    # ('account_ux', 'view_account_invoice_filter'),
+    # ('account_ux', 'view_account_payment_tree_personalization'),
+    # ('account_ux', 'view_move_form'),
+    # ('l10n_ar_purchase', 'report_purchaseorder_document'),
+    # ('l10n_ar_purchase', 'report_purchasequotation_document'),
+    # ('l10n_ar_sale', 'view_order_form'),
+    # ('l10n_ar_ux', 'view_account_payment_form'),
+    # ('l10n_ar_ux', 'view_partner_property_form'),
+    # ('purchase_stock_ux', 'purchase_order_line_search'),
+    # ('purchase_stock_ux', 'purchase_order_line_tree'),
+    # ('sale_stock_ux', 'sale_order_line_usability_tree'),
+    # ('sale_stock_ux', 'view_move_form'),
+    # ('sale_stock_ux', 'view_order_form'),
+    # ('sale_ux', 'res_config_settings_view_form_inherit'),
+    # ('sale_ux', 'sale_order_line_usability_tree'),
+    # ('sale_ux', 'view_order_form'),
+    # ('sale_ux', 'view_sale_advance_payment_inv'),
+    # ('stock_ux', 'view_stock_return_picking_form'),
+    # ('stock_ux', 'view_warehouse_orderpoint_tree_editable'),
 ]
 
 # EXPLÍCITAMENTE EXCLUIDA:
@@ -145,7 +135,7 @@ def migrate(cr, version):
         except Exception as e:
             error_msg = str(e).split('\n')[0][:300]
             fallidas.append((xmlid, view_id, "Error en write: %s" % error_msg))
-            _logger.error(
+            _logger.warning(
                 "    ✗ %s (id=%d): error en activación: %s",
                 xmlid, view_id, error_msg
             )
