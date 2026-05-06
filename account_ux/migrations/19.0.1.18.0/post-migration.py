@@ -19,29 +19,36 @@ _logger = logging.getLogger(__name__)
 
 # 23 vistas validadas por script manual el 26-04-2026
 # Source: reactivar_vistas_post_upgrade.py output
+
 VISTAS_A_REACTIVAR = [
     # CRÍTICAS para PDF de ventas
     ('l10n_ar_sale', 'report_saleorder_document'),  # Header AR
     ('sale_ux', 'report_saleorder'),                # UX del reporte
-    
+
     # CRÍTICAS para inventario/stock (picking)
     ('stock_ux', 'view_picking_form'),
     ('stock_ux', 'view_move_line_tree'),
-    
+
+    # sale order - validadas 06-05-2026 en staging
+    ('sale_stock_ux', 'view_order_form'),                 # Botón cancelar cantidad pendiente
+    ('sale_stock_ux', 'sale_order_line_usability_tree'),  # Columnas qty_delivered, quantity_returned, qty_to_deliver
+    ('sale_stock_ux', 'view_move_form'),                  # Botón Sale Order en stock.move form
+
+    # account_ux - validadas 06-05-2026 en staging
+    ('account_ux', 'view_account_invoice_filter'),               # Filtro Paid + agrupador company en lista facturas
+    ('account_ux', 'view_account_payment_tree_personalization'), # Columna memo en lista de pagos
+    ('account_ux', 'view_move_form'),                            # Form facturas: subtotales, multimoneda, fiscal position, notas internas
+
+    # l10n_ar_ux - validadas 06-05-2026 en staging
+    ('l10n_ar_ux', 'view_partner_property_form'),  # Pestaña Datos Fiscales en partner (padrón ARCA)
+
     # Las siguientes EXCLUIDAS temporalmente
-    # ('account_ux', 'view_account_invoice_filter'),
-    # ('account_ux', 'view_account_payment_tree_personalization'),
-    # ('account_ux', 'view_move_form'),
     # ('l10n_ar_purchase', 'report_purchaseorder_document'),
     # ('l10n_ar_purchase', 'report_purchasequotation_document'),
     # ('l10n_ar_sale', 'view_order_form'),
-    # ('l10n_ar_ux', 'view_account_payment_form'),
-    # ('l10n_ar_ux', 'view_partner_property_form'),
+    # ('l10n_ar_ux', 'view_account_payment_form'),   # Ya activa en DB, no necesaria
     # ('purchase_stock_ux', 'purchase_order_line_search'),
     # ('purchase_stock_ux', 'purchase_order_line_tree'),
-    # ('sale_stock_ux', 'sale_order_line_usability_tree'),
-    # ('sale_stock_ux', 'view_move_form'),
-    # ('sale_stock_ux', 'view_order_form'),
     # ('sale_ux', 'res_config_settings_view_form_inherit'),
     # ('sale_ux', 'sale_order_line_usability_tree'),
     # ('sale_ux', 'view_order_form'),
